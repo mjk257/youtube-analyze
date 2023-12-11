@@ -68,3 +68,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+`CALL apoc.import.graphml('youtube_graph.graphml', {readLabels: true, storeNodeIds: true})`
+`MATCH (n) SET n :VIDEO RETURN n`
+`CALL gds.graph.project('videos', 'VIDEO', 'RELATED')`

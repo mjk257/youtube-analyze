@@ -2,7 +2,7 @@ import pandas as pd
 import networkx as nx
 
 # Import data from raw_data
-df_list = [pd.read_csv("raw_data/" + file + ".txt", sep="\t", header=None) for file in range(0, 4)]
+df_list = [pd.read_csv("raw_data/" + str(file) + ".txt", sep="\t", header=None) for file in range(0, 4)]
 df = pd.concat(df_list)
 
 # Combine related_ids into one column

@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 const app = express();
 const port = 5000;
 
@@ -8,6 +9,8 @@ const dbConnection = require("./dbConn.js");
 
 // Import routing
 const apiRoutes = require("./api.js");
+
+app.use(cors());
 
 // Serve static files from the build directory
 app.use(express.static(path.join(__dirname, "/../build")));
