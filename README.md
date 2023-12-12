@@ -1,74 +1,34 @@
-# Getting Started with Create React App
+# Getting Started with YouTube Analyze
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Data Ingestion
 
-## Available Scripts
+Install dependencies using `pip install -r requirements.txt` in the data directory.
+Run the `data/data_ingestion.py` script. This will generate a file called `youtube_graph.graphml`
+Move the new file into the import folder in a Neo4j DBMS. This can be found by clicking on the ellipsis
+for the DBMS, clicking 'Open folder', and then clicking 'Import'.
+Run the following Cypher queries:
+`CALL apoc.import.graphml('youtube_graph.graphml', {storeNodeIds: true})`
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-`CALL apoc.import.graphml('youtube_graph.graphml', {readLabels: true, storeNodeIds: true})`
 `MATCH (n) SET n :VIDEO RETURN n`
+
 `CALL gds.graph.project('videos', 'VIDEO', 'RELATED')`
+
+## Query Engine
+
+Run the following commands in the root directory:
+`npm install`
+`npm run build`
+`node api/server.js`
+
+Visit the application at http://localhost:5000
+
+## How to use the Query Engine
+
+The query engine has 2 main tabs: Query and PageRank.
+The query tab is the default mode, containing a form.
+Desired values to match in the database can be typed in,
+or the icon can be pressed to toggle between range mode where
+2 values can be entered for a lower and upper bound to filter by.
+
+The second mode, PageRank, will return the top k ranked nodes based on
+the user input using the PageRank algorithm.

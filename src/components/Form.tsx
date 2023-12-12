@@ -65,29 +65,28 @@ export const Form = ({ setVideos, setResults }: Props) => {
             }
         });
     };
-
-    const fields = [
+    const textFields = [
         {
             id: "video_id",
             onChange: (e) => setVideoId(e.target.value),
             label: "ID",
-            rangeToggler: (e) => {},
             type: "text",
         },
         {
             id: "uploader",
             onChange: (e) => setUploader(e.target.value),
             label: "Uploader",
-            rangeToggler: (e) => {},
             type: "text",
         },
         {
             id: "category",
             onChange: (e) => setCategory(e.target.value),
             label: "Category",
-            rangeToggler: (e) => {},
             type: "text",
         },
+    ];
+
+    const rangeFields = [
         {
             id: "age",
             onChange: (e) => setAge(e.target.value),
@@ -196,106 +195,89 @@ export const Form = ({ setVideos, setResults }: Props) => {
                 noValidate
                 autoComplete="off"
             >
-                <div>
-                    {fields.map((field) => {
-                        return (
-                            <div>
-                                {field?.type === "text" && (
+                {textFields.map((field) => {
+                    return (
+                        <TextField
+                            id={field?.id}
+                            label={field?.label}
+                            variant="outlined"
+                            onChange={field?.onChange}
+                            disabled={loading}
+                        />
+                    );
+                })}
+            </Box>
+            <FormControl>
+                {rangeFields.map((field) => {
+                    return (
+                        <FormControl>
+                            {field.range === true ? (
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <IconButton
+                                        onClick={() =>
+                                            field?.rangeToggler(false)
+                                        }
+                                        disabled={loading}
+                                    >
+                                        <NumbersIcon />
+                                    </IconButton>
+                                    <TextField
+                                        id={field?.id + "Lower"}
+                                        label={field?.label + " Lower Bound"}
+                                        variant="outlined"
+                                        type="number"
+                                        onChange={(e) => field?.lower(e)}
+                                        disabled={loading}
+                                    />
+                                    <TextField
+                                        id={field?.id + "Upper"}
+                                        label={field?.label + " Upper Bound"}
+                                        variant="outlined"
+                                        type="number"
+                                        onChange={(e) => {
+                                            field?.upper(e);
+                                        }}
+                                        disabled={loading}
+                                    />
+                                </Box>
+                            ) : (
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <IconButton
+                                        onClick={() =>
+                                            field?.rangeToggler(true)
+                                        }
+                                        disabled={loading}
+                                    >
+                                        <LayersIcon />
+                                    </IconButton>
                                     <TextField
                                         id={field?.id}
                                         label={field?.label}
                                         variant="outlined"
-                                        onChange={field?.onChange}
+                                        type="number"
+                                        onChange={(e) => field?.onChange(e)}
                                         disabled={loading}
                                     />
-                                )}
-                                {field?.type === "range" && (
-                                    <FormControl>
-                                        {field.range === true ? (
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <IconButton
-                                                    onClick={(e) =>
-                                                        field?.rangeToggler(
-                                                            false
-                                                        )
-                                                    }
-                                                    disabled={loading}
-                                                >
-                                                    <NumbersIcon />
-                                                </IconButton>
-                                                <TextField
-                                                    id={field?.id + "Lower"}
-                                                    label={
-                                                        field?.label +
-                                                        " Lower Bound"
-                                                    }
-                                                    variant="outlined"
-                                                    type="number"
-                                                    onChange={(e) =>
-                                                        field?.lower(e)
-                                                    }
-                                                    disabled={loading}
-                                                />
-                                                <TextField
-                                                    id={field?.id + "Upper"}
-                                                    label={
-                                                        field?.id +
-                                                        " Upper Bound"
-                                                    }
-                                                    variant="outlined"
-                                                    type="number"
-                                                    onChange={(e) => {
-                                                        field?.upper(e);
-                                                    }}
-                                                    disabled={loading}
-                                                />
-                                            </Box>
-                                        ) : (
-                                            <div>
-                                                <Box
-                                                    sx={{
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                    }}
-                                                >
-                                                    <IconButton
-                                                        onClick={(e) =>
-                                                            field?.rangeToggler(
-                                                                true
-                                                            )
-                                                        }
-                                                        disabled={loading}
-                                                    >
-                                                        <LayersIcon />
-                                                    </IconButton>
-                                                    <TextField
-                                                        id={field?.id}
-                                                        label={field?.label}
-                                                        variant="outlined"
-                                                        type="number"
-                                                        onChange={(e) =>
-                                                            field?.onChange(e)
-                                                        }
-                                                        disabled={loading}
-                                                    />
-                                                </Box>
-                                            </div>
-                                        )}
-                                    </FormControl>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
-                <Button onClick={(e) => submitForm()} disabled={loading}>
-                    Search
-                </Button>
-            </Box>
+                                </Box>
+                            )}
+                        </FormControl>
+                    );
+                })}
+            </FormControl>
+            <br />
+            <Button onClick={(e) => submitForm()} disabled={loading}>
+                Search
+            </Button>
         </>
     );
 };

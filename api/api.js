@@ -20,28 +20,27 @@ router.post("/db", async (req, res) => {
             ranges.push(
                 "(n." +
                     key +
-                    " > " +
+                    " >= " +
                     value[0] +
                     " AND n." +
                     key +
-                    " < " +
+                    " <= " +
                     value[1] +
                     ")"
             );
             delete query[key];
+        } else {
+            const valueString = parseInt(value)
+                ? parseInt(value)
+                : '"' + value + '"';
+            ranges.push("(n." + key + " = " + valueString + ")");
         }
     }
     if (ranges.length > 0) {
         where = "WHERE " + ranges.join(" AND ");
     }
     dbConnection
-        .run(
-            "MATCH (n " +
-                JSON.stringify(query).replace(/"([^"]+)":/g, "$1:") +
-                ") " +
-                where +
-                " RETURN n"
-        )
+        .run("MATCH (n:VIDEO) " + where + " RETURN n")
         .then((results) => {
             res.json(results);
         });
